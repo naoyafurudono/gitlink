@@ -132,6 +132,11 @@ func convertToGitHubURL(remoteURL string) (string, error) {
 	} else if strings.HasPrefix(url, "https://github.com/") {
 	} else if strings.HasPrefix(url, "git://github.com/") {
 		url = strings.Replace(url, "git://", "https://", 1)
+	} else if strings.HasPrefix(url, "git@git.pepabo.com:") {
+		url = strings.Replace(url, "git@git.pepabo.com:", "https://git.pepabo.com/", 1)
+	} else if strings.HasPrefix(url, "https://git.pepabo.com/") {
+	} else if strings.HasPrefix(url, "git://git.pepabo.com/") {
+		url = strings.Replace(url, "git://", "https://", 1)
 	} else {
 		return "", fmt.Errorf("unsupported remote URL format: %s", remoteURL)
 	}
