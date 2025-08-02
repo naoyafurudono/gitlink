@@ -12,10 +12,10 @@ go install github.com/naoyafurudono/gitlink@latest
 
 ```bash
 # Link to a specific line
-$ go run main.go main.go:177
+$ gitlink main.go:177
 https://github.com/naoyafurudono/gitlink/blob/main/main.go#L177
 
 # Link to a range of lines
-$ go run main.go main.go:177-179
+$ gitlink main.go:177-179
 https://github.com/naoyafurudono/gitlink/blob/main/main.go#L177-L179
 ```
