@@ -127,20 +127,28 @@ func getRepoRoot() (string, error) {
 func convertToGitHubURL(remoteURL string) (string, error) {
 	url := remoteURL
 
-	if strings.HasPrefix(url, "git@github.com:") {
-		url = strings.Replace(url, "git@github.com:", "https://github.com/", 1)
-	} else if strings.HasPrefix(url, "https://github.com/") {
-	} else if strings.HasPrefix(url, "git://github.com/") {
+	// Handle SSH URLs (git@host:path format)
+	if strings.HasPrefix(url, "git@") {
+		// Extract host and path from git@host:path format
+		sshPrefix := "git@"
+		remaining := strings.TrimPrefix(url, sshPrefix)
+		parts := strings.SplitN(remaining, ":", 2)
+		if len(parts) == 2 {
+			host := parts[0]
+			path := parts[1]
+			url = fmt.Sprintf("https://%s/%s", host, path)
+		} else {
+			return "", fmt.Errorf("invalid SSH URL format: %s", remoteURL)
+		}
+	} else if strings.HasPrefix(url, "git://") {
+		// Convert git:// to https://
 		url = strings.Replace(url, "git://", "https://", 1)
-	} else if strings.HasPrefix(url, "git@git.pepabo.com:") {
-		url = strings.Replace(url, "git@git.pepabo.com:", "https://git.pepabo.com/", 1)
-	} else if strings.HasPrefix(url, "https://git.pepabo.com/") {
-	} else if strings.HasPrefix(url, "git://git.pepabo.com/") {
-		url = strings.Replace(url, "git://", "https://", 1)
-	} else {
+	} else if !strings.HasPrefix(url, "https://") && !strings.HasPrefix(url, "http://") {
+		// If it's not a recognized format, return an error
 		return "", fmt.Errorf("unsupported remote URL format: %s", remoteURL)
 	}
 
+	// Remove .git suffix if present
 	url = strings.TrimSuffix(url, ".git")
 
 	return url, nil
