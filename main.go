@@ -173,3 +173,7 @@ func readFileLines(filePath string) ([]string, error) {
 
 	return lines, nil
 }
+
+// Hi!
+//
+// Enjoy!
