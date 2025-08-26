@@ -1,5 +1,14 @@
 # Development Log
 
+## 2025-08-26
+
+### Enhancement: Use Commit Hash Instead of Branch Name
+- Changed URL generation to use commit hash instead of branch name for more stable links
+- Replaced `getCurrentBranch()` function with `getCurrentCommitHash()`
+- Now uses `git rev-parse HEAD` to get the current commit SHA
+- URLs now point to specific commits rather than branches, ensuring links remain valid even after branch changes
+- Example URL format: `https://github.com/user/repo/blob/{commit_hash}/file#L{line}`
+
 ## 2025-08-01
 
 ### Bug Fix: git.pepabo.com Support
