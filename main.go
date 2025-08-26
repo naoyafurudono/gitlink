@@ -38,9 +38,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	branch, err := getCurrentBranch()
+	commitHash, err := getCurrentCommitHash()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error getting current branch: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Error getting current commit hash: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -93,12 +93,12 @@ func main() {
 		lineFragment = fmt.Sprintf("#L%d", line)
 	}
 
-	url := fmt.Sprintf("%s/blob/%s/%s%s", repoPath, branch, relPath, lineFragment)
+	url := fmt.Sprintf("%s/blob/%s/%s%s", repoPath, commitHash, relPath, lineFragment)
 	fmt.Println(url)
 }
 
-func getCurrentBranch() (string, error) {
-	cmd := exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD")
+func getCurrentCommitHash() (string, error) {
+	cmd := exec.Command("git", "rev-parse", "HEAD")
 	output, err := cmd.Output()
 	if err != nil {
 		return "", err
